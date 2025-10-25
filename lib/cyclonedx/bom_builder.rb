@@ -44,6 +44,8 @@ module Cyclonedx
       end
     end
 
+    private
+
     def self.setup(path)
       @options = {}
       OptionParser.new do |opts|
@@ -100,11 +102,16 @@ module Cyclonedx
       @project_path = File.expand_path(@options[:path])
       @provided_path = @options[:path]
 
-      begin
-        @logger.info("Changing directory to Ruby project directory located at #{@provided_path}")
-        Dir.chdir @project_path
-      rescue StandardError => e
-        @logger.error("Unable to change directory to Ruby project directory located at #{@provided_path}. #{e.message}: #{Array(e.backtrace).join("\n")}")
+      if @project_path
+        begin
+          @logger.info("Changing directory to Ruby project directory located at #{@provided_path}")
+          Dir.chdir @project_path
+        rescue StandardError => e
+          @logger.error("Unable to change directory to Ruby project directory located at #{@provided_path}. #{e.message}: #{Array(e.backtrace).join("\n")}")
+          abort
+        end
+      else
+        @logger.error("project_path could not be determined. path provided was: #{@options[:path]}")
         abort
       end
 
@@ -114,6 +121,15 @@ module Cyclonedx
         @bom_output_format = @options[:bom_output_format]
       else
         @logger.error("Unrecognized cyclonedx bom output format provided. Please choose one of #{SUPPORTED_BOM_FORMATS}")
+        abort
+      end
+
+      # Spec version selection
+      requested_spec = @options[:spec_version] || '1.7'
+      if SUPPORTED_SPEC_VERSIONS.include?(requested_spec)
+        @spec_version = requested_spec
+      else
+        @logger.error("Unrecognized CycloneDX spec version '#{requested_spec}'. Please choose one of #{SUPPORTED_SPEC_VERSIONS}")
         abort
       end
 
