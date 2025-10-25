@@ -169,6 +169,15 @@ module Cyclonedx
         abort
       end
 
+      # Spec version selection
+      requested_spec = @options[:spec_version] || '1.7'
+      if SUPPORTED_SPEC_VERSIONS.include?(requested_spec)
+        @spec_version = requested_spec
+      else
+        @logger.error("Unrecognized CycloneDX spec version '#{requested_spec}'. Please choose one of #{SUPPORTED_SPEC_VERSIONS}")
+        abort
+      end
+
       @bom_file_path = if @options[:bom_file_path].nil?
                          "./bom.#{@bom_output_format}"
                        else
@@ -180,9 +189,9 @@ module Cyclonedx
       if @project_path
         begin
           # Use absolute path so it's correct regardless of current working directory
-          gemfile_path = File.join(@project_path, 'Gemfile.lock')
-          # Compute display path for logs: './Gemfile.lock' when provided path is '.', else '<provided>/Gemfile.lock'
-          display_gemfile_path = (@provided_path == '.' ? './Gemfile.lock' : File.join(@provided_path, 'Gemfile.lock'))
+        gemfile_path = File.join(@project_path, 'Gemfile.lock')
+        # Compute display path for logs: './Gemfile.lock' when provided path is '.', else '<provided>/Gemfile.lock'
+        display_gemfile_path = (@provided_path == '.' ? './Gemfile.lock' : File.join(@provided_path, 'Gemfile.lock'))
           @logger.info("Parsing specs from #{display_gemfile_path}...")
           gemfile_contents = File.read(gemfile_path)
           @specs = Bundler::LockfileParser.new(gemfile_contents).specs
