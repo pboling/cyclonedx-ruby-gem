@@ -11,7 +11,7 @@ module Cyclonedx
       original_working_directory = Dir.pwd
       setup(path)
       specs_list
-      bom = build_bom(@gems, @bom_output_format, @spec_version)
+      bom = build_bom(@gems, @bom_output_format, @spec_version, include_metadata: @options[:include_metadata])
 
       begin
         @logger.info("Changing directory to the original working directory located at #{original_working_directory}")
@@ -65,6 +65,9 @@ module Cyclonedx
         end
         opts.on('-s', '--spec-version version', '(Optional) CycloneDX spec version to target (default: 1.7). Supported: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7') do |spec_version|
           @options[:spec_version] = spec_version
+        end
+        opts.on('--include-metadata', 'Include metadata.tools identifying cyclonedx-ruby as the producer') do
+          @options[:include_metadata] = true
         end
         opts.on_tail('-h', '--help', 'Show help message') do
           puts opts

@@ -13,5 +13,6 @@ Scenario: Generate help on demand
       -o, --output bom_file_path       (Optional) Path to output the bom.xml file to
       -f, --format bom_output_format   (Optional) Output format for bom. Currently support xml (default) and json.
       -s, --spec-version version       (Optional) CycloneDX spec version to target (default: 1.7). Supported: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7
+          --include-metadata           Include metadata.tools identifying cyclonedx-ruby as the producer
       -h, --help                       Show help message
   """
