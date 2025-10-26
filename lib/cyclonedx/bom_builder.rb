@@ -11,7 +11,7 @@ module Cyclonedx
       original_working_directory = Dir.pwd
       setup(path)
       specs_list
-      bom = build_bom(@gems, @bom_output_format, @spec_version, include_metadata: @options[:include_metadata])
+      bom = build_bom(@gems, @bom_output_format, @spec_version, include_metadata: @options[:include_metadata], include_enrichment: @options[:enrich_components])
 
       begin
         @logger.info("Changing directory to the original working directory located at #{original_working_directory}")
@@ -68,6 +68,9 @@ module Cyclonedx
         end
         opts.on('--include-metadata', 'Include metadata.tools identifying cyclonedx-ruby as the producer') do
           @options[:include_metadata] = true
+        end
+        opts.on('--enrich-components', 'Include bom-ref and publisher fields on components (uses purl and first author)') do
+          @options[:enrich_components] = true
         end
         opts.on_tail('-h', '--help', 'Show help message') do
           puts opts
