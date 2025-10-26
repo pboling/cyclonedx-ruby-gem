@@ -15,5 +15,6 @@ Scenario: Generate help on demand
       -s, --spec-version version       (Optional) CycloneDX spec version to target (default: 1.7). Supported: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7
           --validate PATH              Validate an existing BOM file instead of generating one
           --include-metadata           Include metadata.tools identifying cyclonedx-ruby as the producer
+          --enrich-components          Include bom-ref and publisher fields on components (uses purl and first author)
       -h, --help                       Show help message
   """
