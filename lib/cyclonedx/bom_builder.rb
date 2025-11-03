@@ -24,7 +24,7 @@ module Cyclonedx
       begin
         FileUtils.mkdir_p(bom_directory) unless File.directory?(bom_directory)
       rescue StandardError => e
-        @logger.error("Unable to create the directory to hold the BOM output at #{@bom_directory}. #{e.message}: #{e.backtrace.join('\n')}")
+        @logger.error("Unable to create the directory to hold the BOM output at #{bom_directory}. #{e.message}: #{e.backtrace.join('\n')}")
         abort
       end
 
