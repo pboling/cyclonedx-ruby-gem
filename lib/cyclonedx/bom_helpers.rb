@@ -55,7 +55,7 @@ module Cyclonedx
       }
 
       gems.each do |gem|
-        bom_hash[:components] += BomComponent.new(gem).hash_val
+        bom_hash[:components] += Cyclonedx::BomComponent.new(gem).hash_val
       end
 
       JSON.pretty_generate(bom_hash)
