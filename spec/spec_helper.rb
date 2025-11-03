@@ -12,6 +12,8 @@ RSpec.configure do |config|
   end
 end
 
+# Copied from https://github.com/cucumber/aruba/blob/3b1a6cea6e3ba55370c3396eef0a955aeb40f287/spec/spec_helper.rb
+# Licensed under MIT - https://github.com/cucumber/aruba/blob/3b1a6cea6e3ba55370c3396eef0a955aeb40f287/LICENSE
 unless RUBY_PLATFORM.include?('java')
   require 'simplecov'
   SimpleCov.command_name 'RSpec'
@@ -19,6 +21,7 @@ unless RUBY_PLATFORM.include?('java')
   # Run simplecov by default
   SimpleCov.start unless ENV.key? 'ARUBA_NO_COVERAGE'
 end
+# End copied from Aruba
 
 mimic_next_major = ENV.fetch('MIMIC_NEXT_MAJOR_VERSION', 'false')
 # Require via legacy path until v2.0.0, and unless testing functionality in preparation for next major release
