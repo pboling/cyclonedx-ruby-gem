@@ -42,12 +42,12 @@ module Cyclonedx
       def deprecated_alias(scope, name, replacement, receiver = nil)
         if scope == :class
           define_singleton_method(name) do |*args, &block|
-            warn("Cyclonedx: #{self}.#{name} deprecated (please use ##{replacement})") unless Cyclonedx::Ruby::Deprecation.deprecate_in_silence
+            warn("Cyclonedx: #{self}.#{name} deprecated (please use .#{replacement})") unless Cyclonedx::Ruby::Deprecation.deprecate_in_silence
             receiver ? receiver.send(replacement, *args, &block) : send(replacement, *args, &block)
           end
         else
           define_method(name) do |*args, &block|
-            warn("Cyclonedx: #{self.class}##{name} deprecated (please use ##{receiver ? "#{receiver}.#{replacement}" : replacement})") unless Cyclonedx::Ruby::Deprecation.deprecate_in_silence
+            warn("Cyclonedx: #{self.class}##{name} deprecated (please use #{receiver ? "#{receiver}.#{replacement}" : replacement})") unless Cyclonedx::Ruby::Deprecation.deprecate_in_silence
             receiver ? receiver.send(replacement, *args, &block) : send(replacement, *args, &block)
           end
         end
