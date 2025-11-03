@@ -133,7 +133,7 @@ module Cyclonedx
         object.name = dependency.name
         object.version = dependency.version
         object.purl = purl(object.name, object.version)
-        gem = get_gem(object.name, object.version)
+        gem = get_gem(object.name, object.version, @logger)
         next if gem.nil?
 
         if gem['licenses']&.length&.positive?

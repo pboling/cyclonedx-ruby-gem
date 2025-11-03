@@ -101,7 +101,7 @@ module Cyclonedx
       builder.to_xml
     end
 
-    def get_gem(name, version)
+    def get_gem(name, version, logger)
       url = "https://rubygems.org/api/v1/versions/#{name}.json"
       begin
         RestClient.proxy = ENV.fetch('http_proxy', nil)
@@ -109,7 +109,7 @@ module Cyclonedx
         body = JSON.parse(response.body)
         body.select { |item| item['number'] == version.to_s }.first
       rescue StandardError
-        @logger.warn("#{name} couldn't be fetched")
+        logger.warn("#{name} couldn't be fetched")
         nil
       end
     end
