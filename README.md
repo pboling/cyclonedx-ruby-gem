@@ -1,13 +1,14 @@
-[![Build Status](https://github.com/CycloneDX/cyclonedx-ruby-gem/workflows/Ruby%20CI/badge.svg)](https://github.com/CycloneDX/cyclonedx-ruby-gem/actions?workflow=Ruby+CI)
-[![Gem Version](https://badge.fury.io/rb/cyclonedx-ruby.svg)](https://badge.fury.io/rb/cyclonedx-ruby)
-[![License](https://img.shields.io/badge/license-Apache%202.0-brightgreen.svg)][License]
+# CycloneDX Ruby Gem
+
+[![Gem Version](https://img.shields.io/gem/v/cyclonedx-ruby)](https://rubygems.org/gems/cyclonedx-ruby)
+[![CT status](https://img.shields.io/github/actions/workflow/status/CycloneDX/cyclonedx-ruby-gem/ruby.yml?branch=master&logo=GitHub&logoColor=white)](https://github.com/CycloneDX/cyclonedx-ruby-gem/actions/workflows/ruby.yml?query=branch%3Amaster)
+[![License](https://img.shields.io/badge/license-Apache%202.0-brightgreen.svg)][License]  
 [![Website](https://img.shields.io/badge/https://-cyclonedx.org-blue.svg)](https://cyclonedx.org/)
 [![Slack Invite](https://img.shields.io/badge/Slack-Join-blue?logo=slack&labelColor=393939)](https://cyclonedx.org/slack/invite)
 [![Group Discussion](https://img.shields.io/badge/discussion-groups.io-blue.svg)](https://groups.io/g/CycloneDX)
 [![Twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Follow)](https://twitter.com/CycloneDX_Spec)
 
-
-# CycloneDX Ruby Gem
+----
 
 The CycloneDX Ruby Gem creates a valid CycloneDX Software Bill of Materials (SBOM) from all project dependencies. CycloneDX is a lightweight SBOM specification that is easily created, human-readable, and simple to parse. 
 
