@@ -16,5 +16,6 @@ Scenario: Generate help on demand
           --validate PATH              Validate an existing BOM file instead of generating one
           --include-metadata           Include metadata.tools identifying cyclonedx-ruby as the producer
           --enrich-components          Include bom-ref and publisher fields on components (uses purl and first author)
+          --gem-server URL             Gem server URL to fetch gem metadata (default: https://gem.coop)
       -h, --help                       Show help message
   """

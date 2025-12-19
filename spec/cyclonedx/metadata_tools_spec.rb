@@ -38,4 +38,3 @@ RSpec.describe 'metadata.tools emission' do
     expect(doc.at_xpath('/c:bom/c:metadata', ns)).to be_nil
   end
 end
-

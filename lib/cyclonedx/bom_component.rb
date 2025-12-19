@@ -31,7 +31,7 @@ module Cyclonedx
 
       if include_enrichment
         # Add bom-ref using the purl when present
-        component_hash[:"bom-ref"] = @purl if @purl && !@purl.to_s.empty?
+        component_hash[:'bom-ref'] = @purl if @purl && !@purl.to_s.empty?
         # Add publisher using first author if present
         author = fetch('author')
         if author && !author.to_s.strip.empty?
@@ -41,18 +41,18 @@ module Cyclonedx
       end
 
       if fetch('license_id')
-        component_hash[:"licenses"] = [
+        component_hash[:licenses] = [
           {
-            "license": {
-              "id": fetch('license_id')
+            license: {
+              id: fetch('license_id')
             }
           }
         ]
       elsif fetch('license_name')
-        component_hash[:"licenses"] = [
+        component_hash[:licenses] = [
           {
-            "license": {
-              "name": fetch('license_name')
+            license: {
+              name: fetch('license_name')
             }
           }
         ]
@@ -68,8 +68,6 @@ module Cyclonedx
         @gem[key]
       elsif @gem.respond_to?(key)
         @gem.public_send(key)
-      else
-        nil
       end
     end
   end

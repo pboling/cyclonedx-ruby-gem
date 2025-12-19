@@ -77,8 +77,6 @@ module Cyclonedx
       File.extname(path).downcase == '.json' ? 'json' : 'xml'
     end
 
-    private
-
     def self.setup(path)
       @options = {}
       OptionParser.new do |opts|
@@ -107,6 +105,9 @@ module Cyclonedx
         end
         opts.on('--enrich-components', 'Include bom-ref and publisher fields on components (uses purl and first author)') do
           @options[:enrich_components] = true
+        end
+        opts.on('--gem-server URL', 'Gem server URL to fetch gem metadata (default: https://gem.coop)') do |gem_server|
+          @options[:gem_server] = gem_server
         end
         opts.on_tail('-h', '--help', 'Show help message') do
           puts opts
@@ -192,20 +193,20 @@ module Cyclonedx
 
       @logger.info("BOM will be written to #{@bom_file_path}") if @project_path
 
-      if @project_path
-        begin
-          # Use absolute path so it's correct regardless of current working directory
-          gemfile_path = File.join(@project_path, 'Gemfile.lock')
-          # Compute display path for logs: './Gemfile.lock' when provided path is '.', else '<provided>/Gemfile.lock'
-          display_gemfile_path = (@provided_path == '.' ? './Gemfile.lock' : File.join(@provided_path, 'Gemfile.lock'))
-          @logger.info("Parsing specs from #{display_gemfile_path}...")
-          gemfile_contents = File.read(gemfile_path)
-          @specs = Bundler::LockfileParser.new(gemfile_contents).specs
-          @logger.info('Specs successfully parsed!')
-        rescue StandardError => e
-          @logger.error("Unable to parse specs from #{gemfile_path}. #{e.message}: #{Array(e.backtrace).join("\n")}")
-          abort
-        end
+      return unless @project_path
+
+      begin
+        # Use absolute path so it's correct regardless of current working directory
+        gemfile_path = File.join(@project_path, 'Gemfile.lock')
+        # Compute display path for logs: './Gemfile.lock' when provided path is '.', else '<provided>/Gemfile.lock'
+        display_gemfile_path = (@provided_path == '.' ? './Gemfile.lock' : File.join(@provided_path, 'Gemfile.lock'))
+        @logger.info("Parsing specs from #{display_gemfile_path}...")
+        gemfile_contents = File.read(gemfile_path)
+        @specs = Bundler::LockfileParser.new(gemfile_contents).specs
+        @logger.info('Specs successfully parsed!')
+      rescue StandardError => e
+        @logger.error("Unable to parse specs from #{gemfile_path}. #{e.message}: #{Array(e.backtrace).join("\n")}")
+        abort
       end
     end
 
@@ -216,7 +217,7 @@ module Cyclonedx
         object.name = dependency.name
         object.version = dependency.version
         object.purl = purl(object.name, object.version)
-        gem = get_gem(object.name, object.version, @logger)
+        gem = get_gem(object.name, object.version, @logger, @options[:gem_server])
         next if gem.nil?
 
         if gem['licenses']&.length&.positive?

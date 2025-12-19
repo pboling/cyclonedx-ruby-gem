@@ -63,8 +63,6 @@ module Cyclonedx
         obj[key]
       elsif obj.respond_to?(key)
         obj.public_send(key)
-      else
-        nil
       end
     end
 
@@ -172,7 +170,7 @@ module Cyclonedx
     # Validate content against the selected CycloneDX schema (local files, offline)
     # Returns [true, nil] on success; [false, "message"] on failure
     def validate_bom_content(content, format, spec_version)
-      schema_dir = File.expand_path("../../schema", __dir__)
+      schema_dir = File.expand_path('../../schema', __dir__)
       case format
       when 'json'
         schema_path = File.join(schema_dir, "bom-#{spec_version}.schema.json")
@@ -193,6 +191,7 @@ module Cyclonedx
           data = JSON.parse(content)
           errors = schemer.validate(data).to_a
           return [true, nil] if errors.empty?
+
           # Build a compact error message
           msgs = errors.first(5).map do |e|
             path = Array(e['data_pointer']).join
@@ -208,12 +207,13 @@ module Cyclonedx
         schema_path = File.join(schema_dir, "bom-#{spec_version}.xsd")
         begin
           # Use local XML catalog to resolve imports like http://cyclonedx.org/schema/spdx
-          previous_catalog = ENV['XML_CATALOG_FILES']
+          previous_catalog = ENV.fetch('XML_CATALOG_FILES', nil)
           ENV['XML_CATALOG_FILES'] = File.join(schema_dir, 'xmlcatalog.xml')
           xsd = Nokogiri::XML::Schema(File.read(schema_path))
           doc = Nokogiri::XML(content) { |cfg| cfg.nonet }
           errors = xsd.validate(doc)
           return [true, nil] if errors.empty?
+
           [false, "XML schema validation failed: #{errors.first.message}"]
         rescue Errno::ENOENT
           [false, "XML schema not found at #{schema_path}"]
@@ -225,8 +225,11 @@ module Cyclonedx
       end
     end
 
-    def get_gem(name, version, logger)
-      url = "https://gem.coop/api/v1/versions/#{name}.json"
+    def get_gem(name, version, logger, gem_server = nil)
+      gem_server ||= 'https://gem.coop'
+      # Remove trailing slash if present
+      gem_server = gem_server.chomp('/')
+      url = "#{gem_server}/api/v1/versions/#{name}.json"
       begin
         RestClient.proxy = ENV.fetch('http_proxy', nil)
         response = RestClient::Request.execute(method: :get, url: url, read_timeout: 2, open_timeout: 2)
