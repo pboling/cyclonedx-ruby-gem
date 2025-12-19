@@ -72,6 +72,9 @@ module Cyclonedx
         opts.on('--enrich-components', 'Include bom-ref and publisher fields on components (uses purl and first author)') do
           @options[:enrich_components] = true
         end
+        opts.on('--gem-server URL', 'Gem server URL to fetch gem metadata (default: https://gem.coop)') do |gem_server|
+          @options[:gem_server] = gem_server
+        end
         opts.on_tail('-h', '--help', 'Show help message') do
           puts opts
           exit
@@ -178,7 +181,7 @@ module Cyclonedx
         object.name = dependency.name
         object.version = dependency.version
         object.purl = purl(object.name, object.version)
-        gem = get_gem(object.name, object.version, @logger)
+        gem = get_gem(object.name, object.version, @logger, @options[:gem_server])
         next if gem.nil?
 
         if gem['licenses']&.length&.positive?

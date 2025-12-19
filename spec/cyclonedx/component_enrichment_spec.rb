@@ -46,4 +46,3 @@ RSpec.describe 'component enrichment' do
     expect(doc.at_xpath('/c:bom/c:components/c:component/c:publisher', ns)).to be_nil
   end
 end
-
