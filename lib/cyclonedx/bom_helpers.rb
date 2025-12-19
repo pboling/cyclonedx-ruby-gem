@@ -170,7 +170,7 @@ module Cyclonedx
     end
 
     def get_gem(name, version, logger)
-      url = "https://rubygems.org/api/v1/versions/#{name}.json"
+      url = "https://gem.coop/api/v1/versions/#{name}.json"
       begin
         RestClient.proxy = ENV.fetch('http_proxy', nil)
         response = RestClient::Request.execute(method: :get, url: url, read_timeout: 2, open_timeout: 2)
