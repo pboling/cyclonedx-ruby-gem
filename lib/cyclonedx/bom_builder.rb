@@ -75,6 +75,9 @@ module Cyclonedx
         opts.on('--gem-server URL', 'Gem server URL to fetch gem metadata (default: https://gem.coop)') do |gem_server|
           @options[:gem_server] = gem_server
         end
+        opts.on('--validate', 'Validate the BOM against CycloneDX schema (currently a no-op)') do
+          @options[:validate] = true
+        end
         opts.on_tail('-h', '--help', 'Show help message') do
           puts opts
           exit

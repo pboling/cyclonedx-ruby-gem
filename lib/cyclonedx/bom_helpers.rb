@@ -58,12 +58,9 @@ module Cyclonedx
     end
 
     # Safe accessor for Hash or OpenStruct-like objects
+    # Delegates to FieldAccessor to avoid code duplication
     def _get(obj, key)
-      if obj.respond_to?(:[]) && obj[key]
-        obj[key]
-      elsif obj.respond_to?(key)
-        obj.public_send(key)
-      end
+      FieldAccessor._get(obj, key)
     end
 
     def build_bom(gems, format, spec_version, include_metadata: false, include_enrichment: false)

@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
+require_relative 'field_accessor'
+
 module Cyclonedx
   class BomComponent
+
     DEFAULT_TYPE = 'library'
     HASH_ALG = 'SHA-256'
 
@@ -63,12 +66,9 @@ module Cyclonedx
 
     private
 
+    # Safe accessor for Hash or OpenStruct-like objects
     def fetch(key)
-      if @gem.respond_to?(:[]) && @gem[key]
-        @gem[key]
-      elsif @gem.respond_to?(key)
-        @gem.public_send(key)
-      end
+      FieldAccessor._get(@gem, key)
     end
   end
 end
