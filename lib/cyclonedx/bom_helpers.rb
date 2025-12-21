@@ -85,8 +85,7 @@ module Cyclonedx
 
       # Optionally include metadata.tools when supported by selected spec
       if include_metadata && metadata_supported?(spec_version)
-        ti = tool_identity
-        ti = ti.compact # omit nil values like version
+        ti = tool_identity.compact # omit nil values like version
         bom_hash[:metadata] = {
           tools: [ti]
         }
