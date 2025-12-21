@@ -142,15 +142,6 @@ module Cyclonedx
         abort
       end
 
-      # Spec version selection
-      requested_spec = @options[:spec_version] || '1.7'
-      if SUPPORTED_SPEC_VERSIONS.include?(requested_spec)
-        @spec_version = requested_spec
-      else
-        @logger.error("Unrecognized CycloneDX spec version '#{requested_spec}'. Please choose one of #{SUPPORTED_SPEC_VERSIONS}")
-        abort
-      end
-
       @bom_file_path = if @options[:bom_file_path].nil?
                          "./bom.#{@bom_output_format}"
                        else
