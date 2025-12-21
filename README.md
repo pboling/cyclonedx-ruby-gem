@@ -34,6 +34,8 @@ cyclonedx-ruby [options]
     `-f, --format bom_output_format` Output format for bom. Supported: xml (default), json
     `-s, --spec-version version` CycloneDX spec version to target (default: 1.7). Supported: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7
     `--include-metadata` Include metadata.tools identifying cyclonedx-ruby as the producer
+    `--enrich-components` Include bom-ref and publisher fields on components (uses purl and first author)
+    `--gem-server URL` Gem server URL to fetch gem metadata (default: https://gem.coop)
     `-h, --help` Show help message
 
 **Output:** bom.xml or bom.json file in project directory
@@ -41,6 +43,8 @@ cyclonedx-ruby [options]
 - By default, outputs conform to CycloneDX spec version 1.7.
 - To generate an older spec version, use `--spec-version`.
 - To embed metadata about this tool (vendor/name/version) into the BOM, pass `--include-metadata` (supported for spec >= 1.2).
+- To enrich components with bom-ref and publisher fields, pass `--enrich-components`.
+- To specify a custom gem server for fetching gem metadata, use `--gem-server URL` (default: https://gem.coop).
 
 #### Examples
 ```bash
@@ -58,6 +62,12 @@ cyclonedx-ruby -p /path/to/ruby/project -f json -s 1.2 -o bom/out.json
 
 # Include producer metadata and validate
 cyclonedx-ruby -p /path/to/ruby/project --include-metadata
+
+# Enrich components with bom-ref and publisher
+cyclonedx-ruby -p /path/to/ruby/project --enrich-components
+
+# Use a custom gem server
+cyclonedx-ruby -p /path/to/ruby/project --gem-server https://custom.gem.server
 ```
 
 
