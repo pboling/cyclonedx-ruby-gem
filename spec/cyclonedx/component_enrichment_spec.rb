@@ -7,7 +7,7 @@ require_relative '../../lib/cyclonedx/bom_helpers'
 RSpec.describe 'component enrichment' do
   let(:spec_version) { '1.7' }
   let(:gem_obj) do
-    # Use OpenStruct-like object by a simple Struct for deterministic methods
+    # Use an OpenStruct-like object using a simple Struct for deterministic methods
     Struct.new(:name, :version, :description, :hash, :purl, :author, :license_id, :license_name)
           .new('sample', '1.0.0', 'desc', 'abc123', 'pkg:gem/sample@1.0.0', 'Alice, Bob', nil, nil)
   end
